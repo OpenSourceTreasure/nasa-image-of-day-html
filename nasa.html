@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+    <link rel="shortcut icon" href="data:image/png;base64,AAABAAEAEBACAAEAAQCwAAAAFgAAACgAAAAQAAAAIAAAAAEAAQAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA">
+    <title>&#65279;</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 10px;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .nasa-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .nasa-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        .nasa-container iframe {
+            width: 100%; /* Full width for responsiveness */
+            max-width: 1000px; /* Maximum width of the video frame */
+            height: calc(100vw * 9 / 16); /* Responsive height to maintain 16:9 aspect ratio */
+            max-height: 600px; /* Limit maximum height for larger screens */
+            margin: 10px auto;
+            display: block;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="nasa-container">
+        <img id="nasaImage" src="" alt="NASA Image of the Day">
+        <p id="imageTitle"></p>
+    </div>
+
+    <script>
+        const apiKey = 'add-your-api-key-here'; // Replace with your API key
+        const url = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const nasaContainer = document.querySelector('.nasa-container');
+                nasaContainer.innerHTML = `<p id="imageTitle">${data.title}</p>`;
+
+                if (data.media_type === 'image') {
+                    nasaContainer.innerHTML += `<img id="nasaImage" src="${data.url}" alt="${data.title}">`;
+                } else if (data.media_type === 'video') {
+                    nasaContainer.innerHTML += `<iframe id="nasaVideo" src="${data.url}" frameborder="0" allowfullscreen></iframe>`;
+                }
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+
+</body>
+</html>
